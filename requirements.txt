@@ -1,0 +1,8 @@
+pandas==1.*
+folium==0.10.*
+Pillow==7.*
+matplotlib==3.*
+scikit-learn==0.*
+graphviz==0.*
+
+
