@@ -18,6 +18,6 @@
 
 ### Détails techniques
 
-- Ce module nécessite de disposer de graphviz (`pip install graphviz`).
+- Ce module nécessite de disposer du logiciel [graphviz](https://graphviz.org/download/) ainsi que du module graphviz pour python (`pip install graphviz`).
 
 - Il a été conçu pour notebooks mais pourra aussi être utilisé dans un environnement python standard en modifiant la constante `JUPYTER_NOTEBOOK` située dans l'en-tête du fichier.
