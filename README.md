@@ -10,4 +10,4 @@ Objectif principal : commandes simples et faciles d'accès, adaptées à tous le
 
 - VizuArbre : interface d'affichage d'arbres binaires (une seule instruction d'afficahge suffit). Basée sur graphviz.
 
-- Licence : mis dans le domaine public.
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jidv/outils_graphiques/master)
