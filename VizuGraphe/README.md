@@ -28,7 +28,7 @@
 - On évitera ce qui est indiqué sur la page [Downloads](https://graphviz.org/download/) de Graphviz.
 Il vaut mieux préférer l'installeur .msi de la version 2.38 :  
 
-**[installeur MSI pour Windows](https://graphviz.org/download/)** 
+**[installeur MSI pour Windows](https://graphviz.gitlab.io/_pages/Download/Download_windows.html)** 
 
 - Une fois l'installation du logiciel effectuée, on ajoutera graphviz au Path Windows (pour que python puisse le trouver) :
 
