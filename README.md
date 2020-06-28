@@ -11,3 +11,21 @@ Objectif principal : commandes simples et faciles d'accès, adaptées à tous le
 
 - VizuArbre : interface d'affichage d'arbres binaires (une seule instruction d'afficahge suffit). Ce module nécessite de disposer du logiciel [graphviz](https://graphviz.org/download/) ainsi que du module graphviz pour python (`pip install graphviz`).
 
+### Installation de graphviz sous Windows
+
+- On évitera ce qui est indiqué sur la page [Downloads](https://graphviz.org/download/) de Graphviz.
+Il vaut mieux préférer l'installeur .msi de la version 2.38 :  
+
+**[installeur MSI pour Windows](https://graphviz.org/download/)** 
+
+- Une fois l'installation du logiciel effectuée, on ajoutera graphviz au Path Windows (pour que python puisse le trouver) :
+
+	- Paramètres > Propriétés Système > Variables d'environnement > Variables système > Path > Modifier > Nouveau 
+	
+	- copier le chemin vers l'installation de graphviz (sans doute "C:\Program Files (x86)\Graphviz2.38\bin")
+	
+- Il suffira ensuite d'installer le module permettant à Python de communiquer avec le logiciel Graphviz :
+
+	- `pip install graphviz`
+
+
