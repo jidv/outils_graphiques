@@ -42,6 +42,10 @@ Objectif principal : commandes simples et faciles d'accès, adaptées à tous le
 
 	- `pip install graphviz`
 
+### TODO
+
+### Alternative Networkx et non pas Graphviz pour réduire dépendance logicielle et faciliter l'installation en établissement
+
 
 
 
