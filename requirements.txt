@@ -4,5 +4,6 @@ Pillow==7.*
 matplotlib==3.*
 scikit-learn==0.*
 graphviz==0.*
+nbgitpuller
 
 
