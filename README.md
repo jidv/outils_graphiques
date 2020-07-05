@@ -10,6 +10,9 @@ Outils d'affichages graphiques adaptés au programme de NSI & collection d'énon
 
 - VizuArbre : interface d'affichage d'arbres binaires (une seule instruction d'afficahge suffit). Ce module nécessite de disposer du logiciel [graphviz](https://graphviz.org/download/) ainsi que du module graphviz pour python (`pip install graphviz`).
 
+
+- Puzzles : collection de situations algorithmiques classiques en lien avec le programme de NSI, avec un index par notion (`0_INDEX.ipynb`).
+
 ### Installation de graphviz sous Windows (méthode 1)
 
 - On se rendra sur la page dédiée : [Downloads](https://graphviz.org/download/) de Graphviz.
