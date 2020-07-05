@@ -26,10 +26,10 @@ class Dessin:
             for col in range(self.larg):
                 self.vue.modifier_grille('fond', lig, col, c = dico[self.fond[lig][col]], visible = True)
                 if lig == self.ycoq and col == self.xcoq :
-                    self.vue.modifier_grille('image', lig, col, cf = '.\persos\coq.png', 
+                    self.vue.modifier_grille('image', lig, col, cf = './persos/coq.png', 
                                                                        visible = True)
                 if lig == self.yf and col == self.xf :
-                    self.vue.modifier_grille('image', lig, col, cf = '.\persos\Fermiere.png', 
+                    self.vue.modifier_grille('image', lig, col, cf = './persos/Fermiere.png', 
                                                                        visible = True)
  
      
