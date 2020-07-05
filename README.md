@@ -1,8 +1,7 @@
 # outils_graphiques
 
-Outils d'affichages graphiques adaptés au programme de NSI.
+Outils d'affichages graphiques adaptés au programme de NSI & collection d'énoncés classiques d'algorithmique en lien avec le programme de NSI.
 
-Objectif principal : commandes simples et faciles d'accès, adaptées à tous les profils d'élèves.
  
 - Grille2D : interface d'affichage d'une grille 2D (pour labyrinthes, sudokus, mots croisés, échecs, morpions, bataille navale etc.) proposant également la gestion de quelques évènements. Basée sur le module matplotlib.
 
@@ -41,10 +40,18 @@ Objectif principal : commandes simples et faciles d'accès, adaptées à tous le
 - Il suffira ensuite d'installer le module permettant à Python de communiquer avec le logiciel Graphviz :
 
 	- `pip install graphviz`
+	
+### DERNIERES MODIFICATIONS :
+
+- 05/07/20
+	- Possibilité de modifier tous les attributs des noeuds et sommets dès la construction des arbres binaires ou graphes.
+	- Possibilité de sélectionner tous les noeuds des arbres binaires pour modification éventuelle, y compris lorsqu'ils ont même étiquette.
+	- Ajout d'une collection de problèmes classiques d'algorithmique en lien avec le programme de NSI.
 
 ### TODO
 
-### Alternative Networkx et non pas Graphviz pour réduire dépendance logicielle et faciliter l'installation en établissement
+- Alternative Networkx et non pas Graphviz pour réduire dépendance logicielle et faciliter l'installation en établissement,
+- Compléter collection de problèmes classiques.
 
 
 
