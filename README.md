@@ -43,6 +43,11 @@ Outils d'affichages graphiques adaptés au programme de NSI & collection d'énon
 - Il suffira ensuite d'installer le module permettant à Python de communiquer avec le logiciel Graphviz :
 
 	- `pip install graphviz`
+    
+### Installation de graphviz sous Debian/Ubuntu
+
+- `sudo apt install graphviz`
+
 	
 ### DERNIERES MODIFICATIONS :
 

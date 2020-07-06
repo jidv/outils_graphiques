@@ -52,3 +52,11 @@
 - Il suffira ensuite d'installer le module permettant à Python de communiquer avec le logiciel Graphviz :
 
 	- `pip install graphviz`
+    
+### Installation de graphviz sous Debian/Ubuntu
+
+- `sudo apt install graphviz`
+
+- Il suffira ensuite d'installer le module permettant à Python de communiquer avec le logiciel Graphviz :
+
+	- `pip install graphviz`

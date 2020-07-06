@@ -179,8 +179,7 @@ class VizuGraphe:
         for sommet, successeurs in self.structure.items():
             for succ in successeurs :
                 p = self.structure[sommet][succ]
-                if p != 0:
-                    self.G.edge(str(sommet), str(succ), label = str(p)) 
+                self.G.edge(str(sommet), str(succ), label = str(p)) 
     
     def _dessiner_matrice_bool(self): 
         #sommets  = self._recuperer_liste_sommets_matrice()
