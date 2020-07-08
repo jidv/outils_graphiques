@@ -55,6 +55,9 @@ Outils d'affichages graphiques adaptés au programme de NSI & collection d'énon
 	
 ### DERNIERES MODIFICATIONS :
 
+- 08/07/20
+	- Correction d'un manquement ne permettant pas de modifier les paramètres par défaut lors de l'initialisation des arbres.
+
 - 05/07/20
 	- Possibilité de modifier tous les attributs des noeuds et sommets dès la construction des arbres binaires ou graphes.
 	- Possibilité de sélectionner tous les noeuds des arbres binaires pour modification éventuelle, y compris lorsqu'ils ont même étiquette.

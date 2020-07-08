@@ -58,7 +58,7 @@ class VizuArbreB:
         self.couleurs = copy(couleurs)
         self.formes = copy(formes)   
         self._initialiser_parametres_dessin()
-        
+        self._modifier(**kwargs)
         self._creer_objet_graphviz()
             
     def _initialiser_parametres_dessin(self):
