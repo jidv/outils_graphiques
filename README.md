@@ -55,6 +55,9 @@ Outils d'affichages graphiques adaptés au programme de NSI & collection d'énon
 	
 ### DERNIERES MODIFICATIONS :
 
+- 09/07/2020
+	- Correction d'un manquement dans les algorithmes de rééquilibrage des arbres binaires (erreur de renommage et mauvaise gestion du cas du rééquilibrage de l'arbre vide).
+
 - 08/07/20
 	- Correction d'un manquement ne permettant pas de modifier les paramètres par défaut lors de l'initialisation des arbres.
 
