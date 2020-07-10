@@ -33,7 +33,8 @@ ACCES_V = "est_vide"
 class VizuArbreB:  
     def __init__(self, arbre, etiquettes_secondaires = None,
                               couleurs = None,
-                              formes = None):
+                              formes = None,
+                              **kwargs):
         '''
         - arbre : instance d'arbre binaire à représenter
         
@@ -48,14 +49,16 @@ class VizuArbreB:
         - formes [ = None] : dictionnaire ayant pour clefs des étiquettes de l'arbre et pour valeurs les formes
                                  des noeuds ('rect', 'rectangle', 'folder', 'house', 'ellipse', 'egg', 
                                  'triangle', 'diamond' [...] 
-                                 https://graphviz.org/doc/info/shapes.html                                        
+                                 https://graphviz.org/doc/info/shapes.html   
+        
+        - **kwargs : il s'agit des paramètres supplémentaires acceptés par la méthode modifier 
         '''     
         self.arbre = arbre
         self.etiquettes_secondaires = deepcopy(etiquettes_secondaires)
         self.couleurs = copy(couleurs)
         self.formes = copy(formes)   
         self._initialiser_parametres_dessin()
-        
+        self._modifier(**kwargs)
         self._creer_objet_graphviz()
             
     def _initialiser_parametres_dessin(self):
@@ -71,6 +74,8 @@ class VizuArbreB:
         self.node_color = (0.5, 0.2, 1.0)             #couleur par défaut au format HSV
         self.node_width = '0.35'                      #largeur des noeuds
         self.node_height = '0.35'                     #hauteur des noeuds
+        self.node_main = True                         #affichage des etiquettes principales
+        self.node_naming = 'etiquette'                #methode de nommage des noeuds ('etiquette' ou 'binaire')
         
         self.edge_style = 'solid'                     #flèches en traits pleins
         self.edge_arrowhead = 'empty'                 #forme des têtes de flèches
@@ -79,7 +84,7 @@ class VizuArbreB:
     def _creer_objet_graphviz(self):
         self.G = gv.Digraph('arbre')
         self._injecter_parametres_dessin_dans_graphviz()
-        self._dessiner_arbre(arbre = self.arbre, name = '')
+        self._dessiner_arbre(arbre = self.arbre, name = 1)
         if JUPYTER_NOTEBOOK : 
             display(self.G)
         else :
@@ -136,47 +141,81 @@ class VizuArbreB:
     def _tuple_to_string(couleur):
         return ' '.join([str(round(c, 4)) for c in couleur])
     
-    def _donner_couleur(self, sommet):
-        if self.couleurs == None or sommet not in self.couleurs:
+    def _donner_couleur(self, sommet, name):
+        if self.node_naming == 'etiquette':
+            nom = sommet
+        elif self.node_naming == 'binaire':
+            nom = name
+        if self.couleurs == None or nom not in self.couleurs.keys() :
             return VizuArbreB._tuple_to_string(self.node_color)
         else:
-            return VizuArbreB._tuple_to_string(self.couleurs[sommet])
+            return VizuArbreB._tuple_to_string(self.couleurs[nom])
         
-    def _donner_label(self, sommet):
-        if self.etiquettes_secondaires == None or sommet not in self.etiquettes_secondaires:
+    def _donner_label(self, sommet, name):
+        if self.node_naming == 'etiquette':
+            nom = sommet
+        elif self.node_naming == 'binaire':
+            nom = name        
+        if self.etiquettes_secondaires == None or nom not in self.etiquettes_secondaires.keys() :
+            sommet = sommet if self.node_main else ''
             S = '<<B>' + str(sommet) + '</B>>'
             return S
         else:
-            e_princ = str(sommet)
-            e_secon = str(self.etiquettes_secondaires[sommet])
+            e_princ = str(sommet) if self.node_main else ''
+            e_secon = str(self.etiquettes_secondaires[nom])
             small = self.node_small_fontsize
             S = '<<B>' + e_princ + '</B><I><FONT POINT-SIZE="' + small + '"><BR/>' + e_secon + '</FONT></I>>'
             return S
 
-    def _donner_forme(self, sommet):
-        if self.formes == None or sommet not in self.formes:
+    def _donner_forme(self, sommet, name):
+        if self.node_naming == 'etiquette':
+            nom = sommet
+        elif self.node_naming == 'binaire':
+            nom = name
+        if self.formes == None or nom not in self.formes.keys() :
             return self.node_shape
         else:
-            return self.formes[sommet]
+            return self.formes[nom]
             
 ################  DESSIN ET ENREGISTREMENT ########################
         
     def _dessiner_arbre(self, arbre, name):
         if not self._tester_vide(arbre):
-            self.G.node( name, label = str(self._donner_label(self._donner_etiquette(arbre))),
-                               color = self._donner_couleur(self._donner_etiquette(arbre)),
-                               shape = self._donner_forme(self._donner_etiquette(arbre)))
-            if name != '':
-                self.G.edge(name[:-1], name)
+            self.G.node( str(name), label = str(self._donner_label(self._donner_etiquette(arbre), name)),
+                                    color = self._donner_couleur(self._donner_etiquette(arbre), name),
+                                    shape = self._donner_forme(self._donner_etiquette(arbre), name))
+            if name != 1:
+                self.G.edge(str(name >> 1), str(name))
             sag = self._donner_gauche(arbre)
             sad = self._donner_droite(arbre)
-            self._dessiner_arbre(sag, name + '1')
-            self._dessiner_arbre(sad, name + '0')
+            self._dessiner_arbre(sag, name << 1)
+            self._dessiner_arbre(sad, (name << 1) + 1)
                     
                     
                     
-################  METHODES ACCESSIBLES     ########################                    
-                    
+################  MODIFICATION     ########################                    
+    
+    def _modifier(self, **kwargs):
+        legal_args = ("size", "label", "node_style", "node_shape", "node_fontsize", 
+                      "node_small_fontsize","node_color", "node_width", "node_height", 
+                      "edge_style", "edge_arrowhead", "edge_arrowsize", "reset", "moteur",
+                      "etiquettes_secondaires", "couleurs", "formes", "node_naming", "node_main")
+        
+        if "reset" in kwargs.keys():
+            if kwargs["reset"] == 'True':
+                self._initialiser_parametres_dessin()
+                self.etiquettes_secondaires = None
+                self.couleurs = None
+                self.formes = None
+        for key, val in kwargs.items():
+            if key in legal_args:
+                if type(val) == int or type(val) == float:
+                    setattr(self, key, str(val))
+                elif type(val) == dict:
+                    setattr(self, key, deepcopy(val))
+                else:
+                    setattr(self, key, val)   
+    
     def modifier(self, **kwargs):
         '''
         Une fois un graphique créé et représenté, permet de modifier les paramètres de dessin.
@@ -196,23 +235,27 @@ class VizuArbreB:
                                                 Autres choix : 'circo', 'dot', 'fdp', 'neato', 'osage', 
                                                 'patchwork', 'sfdp','twopi'
                                                 https://graphviz.org/documentation/
+                                              
  
         - PARAMETRES INDIVIDUELS DES NOEUDS
 
             - etiquettes_secondaires [ = None] : dictionnaire ayant pour clefs des étiquettes
-                                                   de l'arbre et pour valeurs les étiquette secondaires
+                                                   de l'arbre* et pour valeurs les étiquette secondaires
                                                    à afficher.
 
             - couleurs [ = None]               : dictionnaire ayant pour clefs des étiquettes de 
-                                                    l'arbre et pour valeurs les couleurs des noeuds 
+                                                    l'arbre* et pour valeurs les couleurs des noeuds 
                                                     au format (H, S, V) avec H, S, V de type float 
                                                     entre 0 et 1.
 
             - formes [ = None]                 : dictionnaire ayant pour clefs des étiquettes de
-                                                   l'arbre et pour valeurs les formes des sommets ('rect', 
+                                                   l'arbre* et pour valeurs les formes des sommets ('rect', 
                                                    'rectangle', 'folder', 'house', 'ellipse', 'egg', 
                                                    'triangle', 'diamond' [...] 
-                                                   https://graphviz.org/doc/info/shapes.html                           
+                                                   https://graphviz.org/doc/info/shapes.html  
+                                                   
+            - * : si on choisit node_naming = 'binaire' on peut choisir pour clefs le nommage usuel des arbres *
+                  binaires (voir section PARAMETRES DES NOEUDS PAR DEFAUT)
                                                    
         - PARAMETRES DES NOEUDS PAR DEFAUT
         
@@ -233,6 +276,18 @@ class VizuArbreB:
             - node_style [ = 'filled']        : style de remplissage. Au choix parmi 'solid', 'dashed', 
                                                    'dotted', 'bold', 'rounded', 'filled' [...]
                                                    https://graphviz.org/doc/info/attrs.html#k:style
+                                                   
+            - node_main [ = True]      : pour activer/désactiver l'affichage des étiquettes principales.
+            
+            - node_naming [ = 'etiquette']     : en spécifiant ici 'etiquette' ou 'binaire' on précise si
+                                              les clefs des dictionnaires servant à passer les paramètres 
+                                              individuels sont les étiquettes des sommets ou le nommage
+                                              binaire usuel :
+                                              - n = 1 pour le sommet 
+                                              - n = 2 * n  pour sag (n<<1)
+                                              - n = 2 * n + 1 pour sad (n<<1 + 1)            
+                                                   
+                                                   
         
         - PARAMETRES DES ARCS PAR DEFAUT
         
@@ -245,26 +300,7 @@ class VizuArbreB:
                                                   
             - edge_arrowsize [= 0.5]          : taille de la tête de la flèche                                      
         '''
-        
-        legal_args = ("size", "label", "node_style", "node_shape", "node_fontsize", 
-                      "node_small_fontsize","node_color", "node_width", "node_height", 
-                      "edge_style", "edge_arrowhead", "edge_arrowsize", "reset", "moteur",
-                      "etiquettes_secondaires", "couleurs", "formes")
-        
-        if "reset" in kwargs.keys():
-            if kwargs["reset"] == 'True':
-                self._initialiser_parametres_dessin()
-                self.etiquettes_secondaires = None
-                self.couleurs = None
-                self.formes = None
-        for key, val in kwargs.items():
-            if key in legal_args:
-                if type(val) == int or type(val) == float:
-                    setattr(self, key, str(val))
-                elif type(val) == dict:
-                    setattr(self, key, deepcopy(val))
-                else:
-                    setattr(self, key, val)
+        self._modifier(**kwargs)
         self._creer_objet_graphviz()
             
     def enregistrer(self, nom_fichier = None, format_image = None):
@@ -273,7 +309,8 @@ class VizuArbreB:
          Il y a donc deux fichiers qui sont générés.
          
           - nom_fichier [ = 'mon_arbre_binaire'] : nom des deux fichiers sauvegardés dont l'un sera
-                                                   suffixé avec l'extension correspondant au format image choisi
+                                                   suffixé avec l'extension correspondant au format 
+                                                   image choisi
                                                   
           
           - format_image [ = 'png']              : format de fichier de l'image générée. Au choix parmi : 
