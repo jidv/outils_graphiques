@@ -227,8 +227,9 @@ class VizuGraphe:
     
     def _creer_noeuds_graphviz(self, liste_sommets):
         for sommet in liste_sommets:
-            self.G.node( str(sommet), label = self._donner_label(sommet), 
-                                      color = self._donner_couleur(sommet),
+            self.G.node( str(sommet), label = self._donner_label(sommet),
+                                      color = VizuGraphe._tuple_to_string((1, 1, 0)),
+                                      fillcolor = self._donner_couleur(sommet),
                                       shape = self._donner_forme(sommet))
 
 

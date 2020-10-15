@@ -54,6 +54,8 @@ Outils d'affichages graphiques adaptés au programme de NSI & collection d'énon
 
 	
 ### DERNIERES MODIFICATIONS :
+- XX/07/2020
+	- ajout de l'attribut `edge_distinct [= False]` qui permet si besoin de différencier le tracé des fléches gauche et droite.
 
 - 09/07/2020
 	- Correction d'un manquement dans les algorithmes de rééquilibrage des arbres binaires (erreur de renommage et mauvaise gestion du cas du rééquilibrage de l'arbre vide).

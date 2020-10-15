@@ -15,9 +15,9 @@ JUPYTER_NOTEBOOK = True
 
 #en tête pour l'interface n°1 du notebook de documentation
 #ACCES_VIA_GETTERS= False
-#ACCES_E = "v"
-#ACCES_G = "g"
-#ACCES_D = "d"
+#ACCES_E = "valeur"
+#ACCES_G = "gauche"
+#ACCES_D = "droit"
 #ARBRE_VIDE_IS_ARBRE = False
 #ACCES_V = None
 
@@ -54,6 +54,7 @@ class VizuArbreB:
         - **kwargs : il s'agit des paramètres supplémentaires acceptés par la méthode modifier 
         '''     
         self.arbre = arbre
+        assert not self._tester_vide(arbre), 'L\'arbre passé en argument est vide'
         self.etiquettes_secondaires = deepcopy(etiquettes_secondaires)
         self.couleurs = copy(couleurs)
         self.formes = copy(formes)   
@@ -64,7 +65,7 @@ class VizuArbreB:
     def _initialiser_parametres_dessin(self):
         
         self.size = '10'                              #taille maximale de l'image générée
-        self.label = 'Arbre Binaire'                  #titre du graphique
+        self.label = ' '                  #titre du graphique
         self.moteur = 'dot'                           #moteur utilisé pour le placement des noeuds
         
         self.node_style = 'filled'                    #remplissage des noeuds
@@ -78,8 +79,9 @@ class VizuArbreB:
         self.node_naming = 'etiquette'                #methode de nommage des noeuds ('etiquette' ou 'binaire')
         
         self.edge_style = 'solid'                     #flèches en traits pleins
-        self.edge_arrowhead = 'empty'                 #forme des têtes de flèches
+        self.edge_arrowhead = 'none'                  #forme des têtes de flèches
         self.edge_arrowsize = '0.5'                   #taille des têtes de flèches
+        self.edge_distinct = False                    #utiliser une forme différente de flèche pour gauche-droite
 
     def _creer_objet_graphviz(self):
         self.G = gv.Digraph('arbre')
@@ -105,8 +107,7 @@ class VizuArbreB:
                                 fixedsize = 'False',
                                 margin = '0, 0')   
         
-        self.G.edge_attr.update(style = self.edge_style,      
-                                arrowhead = self.edge_arrowhead,  
+        self.G.edge_attr.update(style = self.edge_style,       
                                 arrowsize = self.edge_arrowsize     
                                )      
 
@@ -176,6 +177,19 @@ class VizuArbreB:
             return self.node_shape
         else:
             return self.formes[nom]
+        
+    def _donner_tete(self, sommet, name):
+        if not self.edge_distinct:
+            return self.edge_arrowhead
+        else:
+            if name%2 == 0:
+                return self.edge_arrowhead
+            else:
+                if self.edge_arrowhead == 'empty':
+                    return 'normal'
+                else:
+                    return 'empty'
+        
             
 ################  DESSIN ET ENREGISTREMENT ########################
         
@@ -185,11 +199,17 @@ class VizuArbreB:
                                     color = self._donner_couleur(self._donner_etiquette(arbre), name),
                                     shape = self._donner_forme(self._donner_etiquette(arbre), name))
             if name != 1:
-                self.G.edge(str(name >> 1), str(name))
+                self.G.edge(str(name >> 1), 
+                            str(name), 
+                            arrowhead = self._donner_tete(self._donner_etiquette(arbre), name))
             sag = self._donner_gauche(arbre)
             sad = self._donner_droite(arbre)
             self._dessiner_arbre(sag, name << 1)
             self._dessiner_arbre(sad, (name << 1) + 1)
+        else:
+            self.G.node(str(name), label = ' ', color = 'white', penwidth = '0')
+            self.G.edge(str(name>>1), str(name), 
+                        arrowhead = 'none')
                     
                     
                     
@@ -199,7 +219,8 @@ class VizuArbreB:
         legal_args = ("size", "label", "node_style", "node_shape", "node_fontsize", 
                       "node_small_fontsize","node_color", "node_width", "node_height", 
                       "edge_style", "edge_arrowhead", "edge_arrowsize", "reset", "moteur",
-                      "etiquettes_secondaires", "couleurs", "formes", "node_naming", "node_main")
+                      "etiquettes_secondaires", "couleurs", "formes", "node_naming",
+                      "node_main", "edge_distinct")
         
         if "reset" in kwargs.keys():
             if kwargs["reset"] == 'True':
@@ -298,7 +319,9 @@ class VizuArbreB:
                                                    'none', 'invempty', 'open' [...]
                                                    https://graphviz.org/doc/info/attrs.html#k:arrowType
                                                   
-            - edge_arrowsize [= 0.5]          : taille de la tête de la flèche                                      
+            - edge_arrowsize [= 0.5]          : taille de la tête de la flèche   
+            
+            - self.edge_distinct [= False]    : utiliser une forme différente de flèche pour gauche-droite
         '''
         self._modifier(**kwargs)
         self._creer_objet_graphviz()
